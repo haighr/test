@@ -1,0 +1,209 @@
+
+
+\documentclass[onecolumn]{article}
+\usepackage{graphicx} % needed for including graphics e.g. EPS, PS
+
+%\usepackage{epstopdf}
+%\DeclareGraphicsRule{.eps}{pdf}{.pdf}{`epstopdf #1}
+%\pdfcompresslevel=9
+
+\usepackage{lscape}
+\usepackage{fancyvrb}
+\usepackage{float}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{chngpage}
+\usepackage{hyperref}
+
+\DeclareGraphicsExtensions{.pdf}
+\long\def\comment#1{}
+
+% uncomment if don't want page numbers
+% \pagestyle{empty}
+
+%set dimensions of columns, gap between columns, and paragraph indent 
+\setlength{\textheight}{8.75in}
+\setlength{\columnsep}{0.375in}
+\setlength{\textwidth}{6.8in}
+\setlength{\topmargin}{0.0625in}
+\setlength{\headheight}{0.0in}
+\setlength{\headsep}{0.0in}
+\setlength{\oddsidemargin}{-.19in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.12in}
+\makeatletter
+\def\@normalsize{\@setsize\normalsize{10pt}\xpt\@xpt
+\abovedisplayskip 10pt plus2pt minus5pt\belowdisplayskip 
+\abovedisplayskip \abovedisplayshortskip \z@ 
+plus3pt\belowdisplayshortskip 6pt plus3pt 
+minus3pt\let\@listi\@listI}
+
+% NEED Superscript and subscript in text mode...
+\newcommand{\super}[1]{\ensuremath{^{\textrm{#1}}}}
+\newcommand{\sub}[1]{\ensuremath{_{\textrm{#1}}}}
+\newcommand{\sth}[0]{\super{th}}
+\newcommand{\sst}[0]{\super{st}}
+\newcommand{\snd}[0]{\super{nd}}
+\newcommand{\srd}[0]{\super{rd}}
+
+% provides scientific notation.  Us it like this:
+% 3.2\e{-10} m  will give you: 3.2×10-10 m.
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+
+%need an 11 pt font size for subsection and abstract headings 
+\def\subsize{\@setsize\subsize{12pt}\xipt\@xipt}
+%make section titles bold and 12 point, 2 blank lines before, 1 after
+\def\section{\@startsection {section}{1}{\z@}{1.0ex plus
+1ex minus .2ex}{.2ex plus .2ex}{\large\bf}}
+%make subsection titles bold and 11 point, 1 blank line before, 1 after
+\def\subsection{\@startsection 
+   {subsection}{2}{\z@}{.2ex plus 1ex} {.2ex plus .2ex}{\subsize\bf}}
+
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>  Make DRAFT watermark appear on every page <<<<<<<<<<<<<<<<<<<
+% Comment out this whole section to remove DRAFT watermark
+\usepackage{graphicx,type1cm,eso-pic,color}
+\makeatletter
+          \AddToShipoutPicture{%
+            \setlength{\@tempdimb}{.5\paperwidth}%
+            \setlength{\@tempdimc}{.5\paperheight}%
+            \setlength{\unitlength}{1pt}%
+            \put(\strip@pt\@tempdimb,\strip@pt\@tempdimc){%
+        \makebox(0,0){\rotatebox{55}{\textcolor[gray]{0.85}%
+        {\fontsize{5cm}{5cm}\selectfont{DRAFT}}}}%
+            }%
+        }
+% >>>>>>>>>>>>>>>>>>>>>>>>>>>>  Make DRAFT watermark appear on every page <<<<<<<<<<<<<<<<<<<
+\makeatother
+
+\begin{document}
+
+% if you don't want the date printed, uncomment the next line
+%\date{}
+
+% >>>>>>>>>>>>>>>>>>>>>>>  Put your title here <<<<<<<<<<<<<<<<<<<<<<<<
+% make title bold and 14 pt font (Latex default is non-bold, 16pt)
+\title{\Large {\bf A really basic example of a \LaTeX Document}}
+
+% >>>>>>>>>>>>>>>>>>>>>>> Author's Names, Thanks or Affliation <<<<<<<<
+\author{C. Grandin
+}
+
+\maketitle
+\thispagestyle{empty}
+
+\subsection*{\centering Abstract}
+
+{\em Keywords:
+   \LaTeX, git, knitr
+
+  This document is an example of what Git, \LaTeX, and the R package 'knitr' can do. The three can be used together to create a
+  document and to track changes easliy.
+}
+
+\section*{Introduction}
+{\it Git} version control and \LaTeX typesetting software can be use together to collaborate on documents and track changes.
+
+The length-weight relationship for Strait of Georgia Pacific Hake were determined by using AD Model builder software ({\it ADMB}) \cite{ADMB}
+to fit a simple 2-parameter nonlinear model ({\it Program \ref{lwcode}}) to the length-weight data acquired from sampling of the
+midwater trawls for each species.
+The minimization took place on the squared difference of the predicted weights and the actual weights according to the formula:
+
+\begin{equation}\label{EQnorm2}
+z=\sum_{i}(wpred_i-w_i)^2
+\end{equation}
+
+where {\it wpred} are the predicted weights and {\it w} are the actual weights.
+The data came from 11 trawls. A Monte Carlo Markov Chain (MCMC) with a chain length of 10,000
+was executed for the models and convergence was good.  The length-weight relationship is defined as:
+
+\begin{equation}\label{EQlengthweight}
+ \omega=\alpha \ell^{\beta}
+\end{equation}
+
+%% begin.rcode, echo=FALSE
+%  source('utilities.r')
+%  source('getOutput.r')
+%% end.rcode
+The values of $\alpha$ and $\beta$ were found to be \rinline{lw[[2]][1,]} and \rinline{lw[[2]][2,]} respectively.
+The corresponding equations are:
+
+\begin{equation}\label{LWHake}
+w = \rinline{lw[[2]][1,]} \ell^{\rinline{lw[[2]][2,]}}
+\end{equation}
+
+Length-at-age was also examined for Pacific Hake, in a similar fashion as the length-weight relationship.
+The code for this growth model can be found in {\it Program \ref{lacode}}.
+The minimization took place on the squared difference of the predicted lengths and the observed lengths according to the formula:
+\begin{equation}\label{LAnorm2}
+z=\sum_{i}(\ell pred_i-\ell_i)^2
+\end{equation}
+
+for the Von Bertalanffy relationship:
+
+\begin{equation}\label{VonB}
+L_t = L_\infty (1 - e^{(-kt)})
+\end{equation}
+
+where $L_\infty$ is the asymptotic maximum fork length, $k$ is the growth coefficient, and $L_t$ is the fork length at time t, the age in years.
+For Pacific Hake, the values of $L_\infty$ and $k$ were found to be \rinline{vonb[[2]][1,]} and \rinline{vonb[[2]][2,]} respectively.
+
+\clearpage
+\begin{figure*}
+%% begin.rcode, echo=FALSE, lengthWeightFigure, dev='cairo_pdf'
+%  plotLW(lw)
+%% end.rcode
+\caption{Length-weight relationship for Pacific Hake}
+\label{figLengthWeight}
+\end{figure*}
+
+\begin{figure*}
+%% begin.rcode, echo=FALSE, normFig, dev='cairo_pdf'
+%  getShadeExample(func={function(x) dnorm(x,0,0.25)},from=-1,to=1, lwd=2, col="red", yaxp=c(0,3,30))
+%% end.rcode
+\caption{Example of a normal distribution using getShade function}
+\label{figNormalDist}
+\end{figure*}
+
+\begin{figure*}
+%% begin.rcode, echo=FALSE, chiSqFigFigure, dev='cairo_pdf'
+%  getShadeExample(func={function(x) dchisq(x,100,df=10)},
+%                  from=0,
+%                  to=20,
+%                  lwd=2,
+%                  col="black",
+%                  shade=getShade("green",opacity=20),
+%                  yaxp=c(0,3,30))
+%% end.rcode
+\caption{Example of a chi square distribution using getShade function}
+\label{figChisquareDist}
+\end{figure*}
+
+\begin{thebibliography}{99}
+
+\bibitem{ADMB} Otter Research,
+{\it An Introduction to AD Model Builder for use in Nonlinear Modeling and Statistics,
+Otter Research Ltd., Nanaimo, B.C., Canada, 1994.
+}
+
+\end{thebibliography}
+
+\clearpage
+\newfloat{program}{h}{l}
+\floatname{program}{Program}
+\begin{program}
+  \VerbatimInput[baselinestretch=1,fontsize=\footnotesize,numbers=left]{lengthweight.tpl}
+  \caption{ADMB \cite{ADMB} TPL code for length-weight relationship model.}
+  \label{lwcode}
+\end{program}
+
+\clearpage
+\newfloat{program}{h}{l}
+\floatname{program}{Program}
+\begin{program}
+  \VerbatimInput[baselinestretch=1,fontsize=\footnotesize,numbers=left]{vonb.tpl}
+  \caption{ADMB \cite{ADMB} TPL code for length-age growth model.}
+  \label{lacode}
+\end{program}
+
+\end{document}
+
